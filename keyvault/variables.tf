@@ -15,5 +15,4 @@ variable "storage_key_secret" {
 }
 variable "storage_account_name" {
   type        = string
-  description = "the storage account name"
 }
