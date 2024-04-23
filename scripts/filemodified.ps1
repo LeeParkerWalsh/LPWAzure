@@ -44,7 +44,7 @@ function listFiles([string]$path) {
     }   
 }
 
-#list files in root dir
+#list files in root dir, else path to function to handle directories
 $files = Get-AzStorageFile -ShareName $fileShare -Context $context 
  
 foreach ($file in $files) {
