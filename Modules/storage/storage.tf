@@ -13,6 +13,12 @@ resource "azurerm_storage_share" "FSShare" {
   quota                = 50
 }
 
+resource "azurerm_role_assignment" "automation_account_files" {
+  scope                = azurerm_storage_account.storage.id
+  role_definition_name = "Storage File Data Privileged Contributor"
+  principal_id         = var.auto_principal_id
+}
+
 resource "azurerm_storage_share_directory" "directory" {
   name             = "hellodirectory"
   storage_share_id = azurerm_storage_share.FSShare.id

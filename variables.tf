@@ -19,6 +19,3 @@ variable "runbook_name" {
 variable "autovars" {
   type = list(object({ name = string, value = string }))
 }
-variable "keyvault" {
-  type = string
-}

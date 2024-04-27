@@ -1,12 +1,8 @@
-$keyVault = Get-AutomationVariable -Name keyvault
-$secretName = Get-AutomationVariable -Name secretname
 $storageAccountName = Get-AutomationVariable -Name storageaccountname
 $fileshare = Get-AutomationVariable -Name fileshare
 
 try {
-    # Read from Key Vault using managed identity
     $connection = Connect-AzAccount -identity
-    $readSecret = Get-AzKeyVaultSecret -VaultName $keyVault -Name $secretName -AsPlainText
 }
 catch {
     $errorMessage = $_
@@ -17,7 +13,7 @@ catch {
 $startTimer = Get-Date
 $ArrayOfFiles = @()
 
-$context = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $readSecret
+$context = New-AzStorageContext -StorageAccountName $storageAccountName -EnableFileBackupRequestIntent
 
 #define function to list files in child dir
 function listFiles([string]$path) { 
@@ -29,8 +25,9 @@ function listFiles([string]$path) {
             $file1path = $file1.ShareFileClient.Path
             Write-Output ("it's path is: $($file1path)")
             $deadline = $startTimer - $file1.LastModified.DateTime
-            Write-Output "it was last modified $($deadline.Hours) hours ago"
-            if ($deadline.Hours -gt 1) {
+            Write-Output "it was last modified $([Math]::Floor([decimal]($deadline.TotalHours))) hours ago"
+            #Using TotalHours for example. Math Floor always rounds down.
+            if ($deadline.TotalHours -gt 10) {
                 Remove-AzStorageFile -ShareName $fileshare -Context $context -path $file1path -WhatIf
                 $global:ArrayOfFiles += $file1path
             }
@@ -53,8 +50,9 @@ foreach ($file in $files) {
         $filepath = $file.ShareFileClient.Path
         Write-Output ("it's path is: $($filepath)")
         $deadline = $startTimer - $file.LastModified.DateTime
-        Write-Output "it was last modified $($deadline.Hours) hours ago"
-        if ($deadline.Hours -gt 1) {
+        Write-Output "it was last modified $([Math]::Floor([decimal]($deadline.TotalHours))) hours ago"
+        #Using TotalHours for example. Math Floor always rounds down.
+        if ($deadline.TotalHours -gt 10) {
             Remove-AzStorageFile -ShareName $fileshare -Context $context -path $filepath -WhatIf
             $global:ArrayOfFiles += $filepath
         }
