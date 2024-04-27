@@ -1,15 +1,19 @@
 variable "resource_group_name" {
-  type        = string
+  type = string
 }
 variable "location" {
-  type        = string
+  type = string
 }
 variable "storage_account_name" {
-  type        = string
+  type = string
 }
 variable "storage_account_tier" {
-  type        = string
+  type = string
 }
 variable "storage_account_replication_type" {
-  type        = string
+  type = string
+}
+
+variable "auto_principal_id" {
+  type = string
 }

@@ -57,4 +57,3 @@ resource "azurerm_automation_job_schedule" "autojobschedule" {
     azurerm_automation_runbook.filemodified
   ]
 }
-
