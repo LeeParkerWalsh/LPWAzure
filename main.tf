@@ -23,5 +23,5 @@ module "storage" {
   storage_account_name             = var.storage_account_name
   storage_account_tier             = "Standard"
   storage_account_replication_type = "LRS"
-  auto_principal_id = module.automation.automation_account_id
+  auto_principal_id                = module.automation.automation_account_id
 }
