@@ -32,7 +32,7 @@ resource "azurerm_automation_runbook" "filemodified" {
   log_verbose             = "false"
   log_progress            = "false"
   description             = "Runbook to check when file last modified"
-  runbook_type            = "PowerShell"
+  runbook_type            = "PowerShell72"
 
   content = data.local_file.script.content
 }
