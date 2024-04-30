@@ -20,6 +20,14 @@ resource "azurerm_automation_variable_string" "autovariables" {
   value                   = each.value.value
 }
 
+resource "azurerm_automation_variable_string" "securewebhookvariable" {
+  name                    = "webhook"
+  resource_group_name     = var.resource_group_name
+  automation_account_name = var.automation_account_name
+  value                   = var.webhookURI
+  encrypted               = true
+}
+
 data "local_file" "script" {
   filename = "./scripts/filemodified.ps1"
 }

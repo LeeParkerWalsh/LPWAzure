@@ -26,3 +26,7 @@ variable "autovars" {
   type        = list(object({ name = string, value = string }))
   description = "list of variables for automation account"
 }
+variable "webhookURI" {
+  type        = string
+  description = "address of webhook used within automation for send message"
+}

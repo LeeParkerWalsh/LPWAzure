@@ -11,6 +11,7 @@ module "automation" {
   runbook_name            = var.runbook_name
   automation_account_name = var.automation_account_name
   autovars                = var.autovars
+  webhookURI              = var.webhookURI
 }
 
 module "storage" {

@@ -66,3 +66,53 @@ foreach ($file in $files) {
 Write-Output ""
 Write-Output "The following files would have been deleted:"
 $ArrayOfFiles
+
+#Variables for message sending function
+$title = "$($MyInvocation.MyCommand.Name) results"
+$summary = $MyInvocation.MyCommand.Name #Runbook Name
+$webhook = Get-AutomationVariable -Name webhook
+$text = ""
+
+if ($ArrayOfFiles.Length -eq 0) {
+    $text = "No files deleted this run"
+}
+else {
+    $text = "The following files could have been deleted:"
+    foreach ($output in $ArrayOfFiles) {
+        $text += "\n\n $($output)"
+    }
+}
+
+function sendMessage {
+
+    param (
+        $title,
+        $summary,
+        $uri,
+        $text
+    )
+
+    $JSONBody = [PSCustomObject][Ordered]@{
+        "@Type" = "MessageCard"
+        "@Context" = "<http://schema.org/extensions>"
+        "summary" = $summary
+        "themeColor" = '0078D7'
+        "title" = $title
+        "text" = $text
+
+    }
+
+    $MessageBody = ConvertTo-Json $JSONBody
+    $MessageBody = $MessageBody.Replace('\\n','\n') #Dealing with ConvertTo-Json and escape characters
+
+    $parameters = @{
+        "URI" = $uri
+        "Method" = 'POST'
+        "Body" = $MessageBody
+        "ContentType" = 'application/json'
+    }
+
+Invoke-RestMethod @parameters
+}
+
+sendMessage -title $title -summary $summary -text $text -uri $webhook
