@@ -18,15 +18,3 @@ resource "azurerm_role_assignment" "automation_account_files" {
   role_definition_name = "Storage File Data Privileged Contributor"
   principal_id         = var.auto_principal_id
 }
-
-resource "azurerm_storage_share_directory" "directory" {
-  name             = "hellodirectory"
-  storage_share_id = azurerm_storage_share.FSShare.id
-}
-
-resource "azurerm_storage_share_file" "helloworld" {
-  name             = "helloworld.txt"
-  storage_share_id = azurerm_storage_share.FSShare.id
-  path             = azurerm_storage_share_directory.directory.name
-  source           = "./scripts/helloworld.txt"
-}
