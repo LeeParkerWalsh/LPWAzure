@@ -21,6 +21,7 @@ stages:
       continueOnError: false
       steps:
       - task: DownloadSecureFile@1
+        name: terraformvars
         inputs:
           secureFile: 'terraform.tfvars'
   - stage: tfvalidate
@@ -72,10 +73,14 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
+            commandOptions: |
+              -input=false -auto-approve -var-file=$(terraformvars.secureFilePath)
             environmentServiceNameAzureRM: 'LPWAZDO'
         - task: TerraformTaskV4@4
           displayName: apply
           inputs:
             provider: 'azurerm'
             command: 'apply'
+            commandOptions: |
+              -input=false -auto-approve -var-file=$(terraformvars.secureFilePath)
             environmentServiceNameAzureRM: 'LPWAZDO'
