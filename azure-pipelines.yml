@@ -15,6 +15,14 @@ variables:
   backendKey: 'lpwazure/state.tfstate'
 
 stages:
+  - stage: tfvars
+    jobs:
+    - job: downloadSecureFile
+      continueOnError: false
+      steps:
+      - task: DownloadSecureFile@1
+        inputs:
+          secureFile: 'terraform.tfvars'
   - stage: tfvalidate
     jobs:
     - job: validate
