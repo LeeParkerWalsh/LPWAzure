@@ -15,15 +15,6 @@ variables:
   backendKey: 'lpwazure/state.tfstate'
 
 stages:
-  - stage: tfvars
-    jobs:
-    - job: downloadSecureFile
-      continueOnError: false
-      steps:
-      - task: DownloadSecureFile@1
-        name: terraformvars
-        inputs:
-          secureFile: 'terraform.tfvars'
   - stage: tfvalidate
     jobs:
     - job: validate
@@ -54,6 +45,10 @@ stages:
     jobs:
       - job: apply
         steps:
+        - task: DownloadSecureFile@1
+          name: terraformvars
+          inputs:
+            secureFile: 'terraform.tfvars'
         - task: TerraformInstaller@1
           displayName: tfinstall
           inputs:
