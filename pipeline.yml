@@ -24,7 +24,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            backendServiceArm: 'LPWAZDO'
+            backendServiceArm: 'AZDOLPW'
             backendAzureRmResourceGroupName: '$(backendResourceGroup)'
             backendAzureRmStorageAccountName: '$(backendStorageAccount)'
             backendAzureRmContainerName: '$(backendContainer)'
@@ -53,7 +53,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            backendServiceArm: 'LPWAZDO'
+            backendServiceArm: 'AZDOLPW'
             backendAzureRmResourceGroupName: '$(backendResourceGroup)'
             backendAzureRmStorageAccountName: '$(backendStorageAccount)'
             backendAzureRmContainerName: '$(backendContainer)'
@@ -65,7 +65,7 @@ stages:
             command: 'plan'
             commandOptions: |
               -var-file=$(terraformvars.secureFilePath)
-            environmentServiceNameAzureRM: 'LPWAZDO'
+            environmentServiceNameAzureRM: 'AZDOLPW'
         - task: TerraformTaskV4@4
           displayName: apply
           inputs:
@@ -73,4 +73,4 @@ stages:
             command: 'apply'
             commandOptions: |
               -input=false -auto-approve -var-file=$(terraformvars.secureFilePath)
-            environmentServiceNameAzureRM: 'LPWAZDO'
+            environmentServiceNameAzureRM: 'AZDOLPW'
